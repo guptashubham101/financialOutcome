@@ -1,6 +1,5 @@
 from prettytable import PrettyTable
 import pandas as pd
-import operator
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
 encoding = 'unicode_escape'
@@ -41,7 +40,6 @@ def DRFCodeDistribution(drgList):
     giCases = []
     hemorrhageCases = []
     asphyxiaCases = []
-    normalCases = []
     HIECases = []
 
     sepsisICD = ['P36', 'R65.21', 'P83.0']
@@ -93,12 +91,47 @@ def DRFCodeDistribution(drgList):
     congenital_chromosome_abnormalitiesICD = ['Q93.3', 'Q93.81', 'Q93.88', 'Q96.9', 'Q99.8']
 
     totalCost = 0
+
+    rdsTotalCost = []
+    sepsisTotalCost = []
+    bpdTotalCost = []
+    necTotalCost = []
+    ivhTotalCost = []
+    pneumoTotalCost = []
+    apneaTotalCost = []
+    pphnTotalCost = []
+    hypothermiaTotalCost = []
+    ropTotalCost = []
+    jaundiceTotalCost = []
+    cvsTotalCost = []
+    giTotalCost = []
+    asphyxiaTotalCost = []
+    hypoglycemiaTotalCost = []
+    hieTotalCost = []
     los = []
 
     for code in drgList:
         patientRows = patientMaster[patientMaster['APRDRG Code'] == code]
 
         for index, row in patientRows.iterrows():
+
+            isApnea = False
+            isPPHN = False
+            isPneumo = False
+            isRDS = False
+            isIVH = False
+            isBPD = False
+            isSepsis = False
+            isNEC = False
+            isHypothermia = False
+            isROP = False
+            isJaundice = False
+            isCVS = False
+            isGI = False
+            isAsphyxia = False
+            isHypoglycemia = False
+            isHie = False
+
             value1 = ''
             value2 = ''
             value3 = ''
@@ -209,142 +242,190 @@ def DRFCodeDistribution(drgList):
                 for code in hypothermiaICD:
                     if (value1.__contains__(code) or value2.__contains__(code) or value3.__contains__(
                             code) or value4.__contains__(code) or value5.__contains__(code)):
+                        isHypothermia = True
                         hypothermiaCases.append(row['PatientID'])
                         break
                 for code in sepsisICD:
                     if (value1.__contains__(code) or value2.__contains__(code) or value3.__contains__(
                             code) or value4.__contains__(code) or value5.__contains__(code)):
+                        isSepsis = True
                         sepsisCases.append(row['PatientID'])
                         break
                 for code in necICD:
                     if (value1.__contains__(code) or value2.__contains__(code) or value3.__contains__(
                             code) or value4.__contains__(code) or value5.__contains__(code)):
+                        isNEC = True
                         necCases.append(row['PatientID'])
                         break
                 for code in ropICD:
                     if (value1.__contains__(code) or value2.__contains__(code) or value3.__contains__(
                             code) or value4.__contains__(code) or value5.__contains__(code)):
+                        isROP = True
                         ropCases.append(row['PatientID'])
                         break
                 for code in bpdICD:
                     if (value1.__contains__(code) or value2.__contains__(code) or value3.__contains__(
                             code) or value4.__contains__(code) or value5.__contains__(code)):
+                        isBPD = True
                         bpdCases.append(row['PatientID'])
                         break
                 for code in rdsICD:
                     if (value1.__contains__(code) or value2.__contains__(code) or value3.__contains__(
                             code) or value4.__contains__(code) or value5.__contains__(code)):
+                        isRDS = True
                         rdsCases.append(row['PatientID'])
                         break
                 for code in jaundiceICD:
                     if (value1.__contains__(code) or value2.__contains__(code) or value3.__contains__(
                             code) or value4.__contains__(code) or value5.__contains__(code)):
+                        isJaundice = True
                         jaundiceCases.append(row['PatientID'])
                         break
                 for code in cvsICD:
                     if (value1.__contains__(code) or value2.__contains__(code) or value3.__contains__(
                             code) or value4.__contains__(code) or value5.__contains__(code)):
+                        isCVS = True
                         cvsCases.append(row['PatientID'])
                         break
                 for code in giICD:
                     if (value1.__contains__(code) or value2.__contains__(code) or value3.__contains__(
                             code) or value4.__contains__(code) or value5.__contains__(code)):
+                        isGI = True
                         giCases.append(row['PatientID'])
                         break
                 for code in hemorrhageICD:
                     if (value1.__contains__(code) or value2.__contains__(code) or value3.__contains__(
                             code) or value4.__contains__(code) or value5.__contains__(code)):
+                        isIVH = True
                         hemorrhageCases.append(row['PatientID'])
                         break
                 for code in asphyxiaICD:
                     if (value1.__contains__(code) or value2.__contains__(code) or value3.__contains__(
                             code) or value4.__contains__(code) or value5.__contains__(code)):
+                        isAsphyxia = True
                         asphyxiaCases.append(row['PatientID'])
                         break
                 for code in apneaICD:
                     if (value1.__contains__(code) or value2.__contains__(code) or value3.__contains__(
                             code) or value4.__contains__(code) or value5.__contains__(code)):
+                        isApnea = True
                         ApneaCases.append(row['PatientID'])
                         break
                 for code in hypoglycemiaICD:
                     if (value1.__contains__(code) or value2.__contains__(code) or value3.__contains__(
                             code) or value4.__contains__(code) or value5.__contains__(code)):
+                        isHypoglycemia = True
                         HypoglycemiaCases.append(row['PatientID'])
                         break
                 for code in pphnICD:
                     if (value1.__contains__(code) or value2.__contains__(code) or value3.__contains__(
                             code) or value4.__contains__(code) or value5.__contains__(code)):
+                        isPPHN = True
                         PPHNCases.append(row['PatientID'])
                         break
                 for code in pneumothoraxICD:
                     if (value1.__contains__(code) or value2.__contains__(code) or value3.__contains__(
                             code) or value4.__contains__(code) or value5.__contains__(code)):
+                        isPneumo = True
                         PneumothoraxCases.append(row['PatientID'])
                         break
                 for code in hieICD:
                     if (value1.__contains__(code) or value2.__contains__(code) or value3.__contains__(
                             code) or value4.__contains__(code) or value5.__contains__(code)):
+                        isHie = True
                         HIECases.append(row['PatientID'])
                         break
 
-    baselineTable = {}
-    baselineTable['DRG Code'] = drgList
-    baselineTable['Patient Count'] = len(los)
-    baselineTable['Average LOS'] = round(sum(los) / len(los), 2)
-    baselineTable['Total Cost (MM)'] = round(totalCost / 1000000, 2)
-    baselineTable['Cost per day in $K'] = round(totalCost / (1000 * sum(los)), 2)
-    baselineTable['Cost per patient in $K'] = round(totalCost / (1000 * len(los)), 2)
+                if (isRDS):
+                    rdsTotalCost.append(row['Total_Direct_Variable_Cost'])
+                if (isSepsis):
+                    sepsisTotalCost.append(row['Total_Direct_Variable_Cost'])
+                if (isBPD):
+                    bpdTotalCost.append(row['Total_Direct_Variable_Cost'])
+                if (isNEC):
+                    necTotalCost.append(row['Total_Direct_Variable_Cost'])
+                if (isIVH):
+                    ivhTotalCost.append(row['Total_Direct_Variable_Cost'])
+                if (isApnea):
+                    apneaTotalCost.append(row['Total_Direct_Variable_Cost'])
+                if (isPPHN):
+                    pphnTotalCost.append(row['Total_Direct_Variable_Cost'])
+                if (isHypothermia):
+                    hypothermiaTotalCost.append(row['Total_Direct_Variable_Cost'])
+                if (isROP):
+                    ropTotalCost.append(row['Total_Direct_Variable_Cost'])
+                if (isJaundice):
+                    jaundiceTotalCost.append(row['Total_Direct_Variable_Cost'])
+                if (isCVS):
+                    cvsTotalCost.append(row['Total_Direct_Variable_Cost'])
+                if (isGI):
+                    giTotalCost.append(row['Total_Direct_Variable_Cost'])
+                if (isAsphyxia):
+                    asphyxiaTotalCost.append(row['Total_Direct_Variable_Cost'])
+                if (isHypoglycemia):
+                    hypoglycemiaTotalCost.append(row['Total_Direct_Variable_Cost'])
+                if (isHie):
+                    hieTotalCost.append(row['Total_Direct_Variable_Cost'])
+                if (isPneumo):
+                    pneumoTotalCost.append(row['Total_Direct_Variable_Cost'])
 
     morbidityDict = {}
-    morbidityDict["Hypothermia"] = len(hypothermiaCases)
-    morbidityDict["Sepsis"] = len(sepsisCases)
-    morbidityDict["ROP"] = len(ropCases)
-    morbidityDict["BPD"] = len(bpdCases)
-    morbidityDict["NEC"] = len(necCases)
-    morbidityDict["RDS"] = len(rdsCases)
-    morbidityDict["Jaundice"] = len(jaundiceCases)
-    morbidityDict["CVS"] = len(cvsCases)
-    morbidityDict["Asphyxia"] = len(asphyxiaCases)
-    morbidityDict["Hemorrhage"] = len(hemorrhageCases)
-    morbidityDict["GI"] = len(giCases)
-    morbidityDict["Normal"] = len(normalCases)
-    morbidityDict["Apnea"] = len(ApneaCases)
-    morbidityDict["Hypoglycemia"] = len(HypoglycemiaCases)
-    morbidityDict["PPHN"] = len(PPHNCases)
-    morbidityDict["Pneumothorax"] = len(PneumothoraxCases)
-    morbidityDict["HIE"] = len(HIECases)
+    morbidityDict['DRG Code'] = drgList
+    morbidityDict['Patient Count'] = len(los)
+    morbidityDict['Average LOS'] = round(sum(los) / len(los), 2)
+    morbidityDict['Cost per patient in $K'] = round(totalCost / (1000 * len(los)), 2)
 
-    sorted_morbidity = dict(sorted(morbidityDict.items(), key=operator.itemgetter(1), reverse=True))
-    topK = 20
-    i = 0
+    morbidityDict["Hypothermia"] = 0
+    morbidityDict["Sepsis"] = 0
+    morbidityDict["ROP"] = 0
+    morbidityDict["BPD"] = 0
+    morbidityDict["NEC"] = 0
+    morbidityDict["RDS"] = 0
+    morbidityDict["Jaundice"] = 0
+    morbidityDict["CVS"] = 0
+    morbidityDict["Asphyxia"] = 0
+    morbidityDict["Hemorrhage"] = 0
+    morbidityDict["GI"] = 0
+    morbidityDict["Apnea"] = 0
+    morbidityDict["Hypoglycemia"] = 0
+    morbidityDict["PPHN"] = 0
+    morbidityDict["Pneumothorax"] = 0
+    morbidityDict["HIE"] = 0
 
-    baselineTable["Hypothermia"] = 0
-    baselineTable["Sepsis"] = 0
-    baselineTable["ROP"] = 0
-    baselineTable["BPD"] = 0
-    baselineTable["NEC"] = 0
-    baselineTable["RDS"] = 0
-    baselineTable["Jaundice"] = 0
-    baselineTable["CVS"] = 0
-    baselineTable["Asphyxia"] = 0
-    baselineTable["Hemorrhage"] = 0
-    baselineTable["GI"] = 0
-    baselineTable["Normal"] = 0
-    baselineTable["Apnea"] = 0
-    baselineTable["Hypoglycemia"] = 0
-    baselineTable["PPHN"] = 0
-    baselineTable["Pneumothorax"] = 0
-    baselineTable["HIE"] = 0
+    if(len(hypothermiaTotalCost) > 0):
+        morbidityDict["Hypothermia"] = round(sum(hypothermiaTotalCost) / 1000 / len(hypothermiaTotalCost),2)
+    if (len(sepsisTotalCost) > 0):
+        morbidityDict["Sepsis"] = round(sum(sepsisTotalCost) / 1000 / len(sepsisTotalCost),2)
+    if (len(ropTotalCost) > 0):
+        morbidityDict["ROP"] = round(sum(ropTotalCost) / 1000 / len(ropTotalCost),2)
+    if (len(bpdTotalCost) > 0):
+        morbidityDict["BPD"] = round(sum(bpdTotalCost) / 1000 / len(bpdTotalCost),2)
+    if (len(necTotalCost) > 0):
+        morbidityDict["NEC"] = round(sum(necTotalCost) / 1000 / len(necTotalCost),2)
+    if (len(rdsTotalCost) > 0):
+        morbidityDict["RDS"] = round(sum(rdsTotalCost) / 1000 / len(rdsTotalCost),2)
+    if (len(jaundiceTotalCost) > 0):
+        morbidityDict["Jaundice"] = round(sum(jaundiceTotalCost) / 1000 / len(jaundiceTotalCost),2)
+    if (len(cvsTotalCost) > 0):
+        morbidityDict["CVS"] = round(sum(cvsTotalCost) / 1000 / len(cvsTotalCost),2)
+    if (len(asphyxiaTotalCost) > 0):
+        morbidityDict["Asphyxia"] = round(sum(asphyxiaTotalCost) / 1000 / len(asphyxiaTotalCost),2)
+    if (len(ivhTotalCost) > 0):
+        morbidityDict["Hemorrhage"] = round(sum(ivhTotalCost) / 1000 / len(ivhTotalCost),2)
+    if (len(giTotalCost) > 0):
+        morbidityDict["GI"] = round(sum(giTotalCost) / 1000 / len(giTotalCost),2)
+    if (len(apneaTotalCost) > 0):
+        morbidityDict["Apnea"] = round(sum(apneaTotalCost) / 1000 / len(apneaTotalCost),2)
+    if (len(hypoglycemiaTotalCost) > 0):
+        morbidityDict["Hypoglycemia"] = round(sum(hypoglycemiaTotalCost) / 1000 / len(hypoglycemiaTotalCost),2)
+    if (len(pphnTotalCost) > 0):
+        morbidityDict["PPHN"] = round(sum(pphnTotalCost) / 1000 / len(pphnTotalCost),2)
+    if (len(pneumoTotalCost) > 0):
+        morbidityDict["Pneumothorax"] = round(sum(pneumoTotalCost) / 1000 / len(pneumoTotalCost),2)
+    if (len(hieTotalCost) > 0):
+        morbidityDict["HIE"] = round(sum(hieTotalCost) / 1000 / len(hieTotalCost),2)
 
-    for key in sorted_morbidity:
-        if (morbidityDict.get(key)) > 0:
-            if i == topK:
-                break
-            i = i + 1
-
-            baselineTable[key] = sorted_morbidity.get(key)
-
-    return baselineTable
+    return morbidityDict
 
 
 excelPathHospitalCost = 'Hospital Costs.xlsx'
@@ -371,22 +452,22 @@ drgCodeGreaterthan2500 = [640, 634, 639, 633, 631, 636]
 drgAll = [626, 622, 625, 621, 623, 609, 614, 612, 611, 613, 588, 607, 602, 593, 591, 589, 608, 603, 640, 634, 639, 633,
           631, 636]
 
-baselineTable1 = DRFCodeDistribution(drgCodeGreaterthan500Lessthan750)
-baselineTable2 = DRFCodeDistribution(drgCodeGreaterthan750Lessthan1000)
-baselineTable3 = DRFCodeDistribution(drgCodeLessthan1000Only)
-baselineTable4 = DRFCodeDistribution(drgCodeLessthan1000)
-baselineTable5 = DRFCodeDistribution(drgCodeGreaterthan1000Lessthan1250)
-baselineTable6 = DRFCodeDistribution(drgCodeGreaterthan1250Lessthan1500)
-baselineTable7 = DRFCodeDistribution(drgCodeLessthan1500Only)
-baselineTable8 = DRFCodeDistribution(drgCodeLessthan1500)
-baselineTable9 = DRFCodeDistribution(drgCodeGreaterthan1500Lessthan2000)
-baselineTable10 = DRFCodeDistribution(drgCodeGreaterthan2000Lessthan2500)
-baselineTable11 = DRFCodeDistribution(drgCodeGreaterthan1500Lessthan2500Only)
-baselineTable12 = DRFCodeDistribution(drgCodeGreaterthan1500Lessthan2500)
-baselineTable13 = DRFCodeDistribution(drgCodeGreaterthan2500)
-baselineTable14 = DRFCodeDistribution(drgAll)
+outputTable1 = DRFCodeDistribution(drgCodeGreaterthan500Lessthan750)
+outputTable2 = DRFCodeDistribution(drgCodeGreaterthan750Lessthan1000)
+outputTable3 = DRFCodeDistribution(drgCodeLessthan1000Only)
+outputTable4 = DRFCodeDistribution(drgCodeLessthan1000)
+outputTable5 = DRFCodeDistribution(drgCodeGreaterthan1000Lessthan1250)
+outputTable6 = DRFCodeDistribution(drgCodeGreaterthan1250Lessthan1500)
+outputTable7 = DRFCodeDistribution(drgCodeLessthan1500Only)
+outputTable8 = DRFCodeDistribution(drgCodeLessthan1500)
+outputTable9 = DRFCodeDistribution(drgCodeGreaterthan1500Lessthan2000)
+outputTable10 = DRFCodeDistribution(drgCodeGreaterthan2000Lessthan2500)
+outputTable11 = DRFCodeDistribution(drgCodeGreaterthan1500Lessthan2500Only)
+outputTable12 = DRFCodeDistribution(drgCodeGreaterthan1500Lessthan2500)
+outputTable13 = DRFCodeDistribution(drgCodeGreaterthan2500)
+outputTable14 = DRFCodeDistribution(drgAll)
 
-baselineTable = PrettyTable(["Weight categories (gm)",
+outputTable = PrettyTable(["Weight categories (gm)",
     "500-750",
     "750-1000",
     "<1000",
@@ -402,145 +483,123 @@ baselineTable = PrettyTable(["Weight categories (gm)",
     ">2500",
     "All"])
 
-baselineTable.add_row(['DRG Code', baselineTable1['DRG Code'], baselineTable2['DRG Code'],
-      baselineTable3['DRG Code'], baselineTable4['DRG Code'],
-      baselineTable5['DRG Code'], baselineTable6['DRG Code'], baselineTable7['DRG Code'],
-      baselineTable8['DRG Code'], baselineTable9['DRG Code'], baselineTable10['DRG Code'],
-      baselineTable11['DRG Code'], baselineTable12['DRG Code'], baselineTable13['DRG Code'],
-      baselineTable14['DRG Code']])
+outputTable.add_row(['DRG Code', outputTable1['DRG Code'], outputTable2['DRG Code'],
+      outputTable3['DRG Code'], outputTable4['DRG Code'],
+      outputTable5['DRG Code'], outputTable6['DRG Code'], outputTable7['DRG Code'],
+      outputTable8['DRG Code'], outputTable9['DRG Code'], outputTable10['DRG Code'],
+      outputTable11['DRG Code'], outputTable12['DRG Code'], outputTable13['DRG Code'],
+      outputTable14['DRG Code']])
 
-baselineTable.add_row(['Patient Count', baselineTable1['Patient Count'], baselineTable2['Patient Count'],
-      baselineTable3['Patient Count'], baselineTable4['Patient Count'],
-      baselineTable5['Patient Count'], baselineTable6['Patient Count'], baselineTable7['Patient Count'],
-      baselineTable8['Patient Count'], baselineTable9['Patient Count'], baselineTable10['Patient Count'],
-      baselineTable11['Patient Count'], baselineTable12['Patient Count'], baselineTable13['Patient Count'],
-      baselineTable14['Patient Count']])
+outputTable.add_row(['Patient Count', outputTable1['Patient Count'], outputTable2['Patient Count'],
+      outputTable3['Patient Count'], outputTable4['Patient Count'],
+      outputTable5['Patient Count'], outputTable6['Patient Count'], outputTable7['Patient Count'],
+      outputTable8['Patient Count'], outputTable9['Patient Count'], outputTable10['Patient Count'],
+      outputTable11['Patient Count'], outputTable12['Patient Count'], outputTable13['Patient Count'],
+      outputTable14['Patient Count']])
 
-baselineTable.add_row(['Average LOS', baselineTable1['Average LOS'], baselineTable2['Average LOS'],
-      baselineTable3['Average LOS'], baselineTable4['Average LOS'],
-      baselineTable5['Average LOS'], baselineTable6['Average LOS'], baselineTable7['Average LOS'],
-      baselineTable8['Average LOS'], baselineTable9['Average LOS'], baselineTable10['Average LOS'],
-      baselineTable11['Average LOS'], baselineTable12['Average LOS'], baselineTable13['Average LOS'],
-      baselineTable14['Average LOS']])
-baselineTable.add_row(['Total Cost (MM)', baselineTable1['Total Cost (MM)'], baselineTable2['Total Cost (MM)'],
-      baselineTable3['Total Cost (MM)'], baselineTable4['Total Cost (MM)'],
-      baselineTable5['Total Cost (MM)'], baselineTable6['Total Cost (MM)'], baselineTable7['Total Cost (MM)'],
-      baselineTable8['Total Cost (MM)'], baselineTable9['Total Cost (MM)'], baselineTable10['Total Cost (MM)'],
-      baselineTable11['Total Cost (MM)'], baselineTable12['Total Cost (MM)'], baselineTable13['Total Cost (MM)'],
-      baselineTable14['Total Cost (MM)']])
-baselineTable.add_row(['Cost per day in $K', baselineTable1['Cost per day in $K'], baselineTable2['Cost per day in $K'],
-      baselineTable3['Cost per day in $K'], baselineTable4['Cost per day in $K'],
-      baselineTable5['Cost per day in $K'], baselineTable6['Cost per day in $K'], baselineTable7['Cost per day in $K'],
-      baselineTable8['Cost per day in $K'], baselineTable9['Cost per day in $K'], baselineTable10['Cost per day in $K'],
-      baselineTable11['Cost per day in $K'], baselineTable12['Cost per day in $K'], baselineTable13['Cost per day in $K'],
-      baselineTable14['Cost per day in $K']])
-baselineTable.add_row(['Cost per patient in $K', baselineTable1['Cost per patient in $K'], baselineTable2['Cost per patient in $K'],
-      baselineTable3['Cost per patient in $K'], baselineTable4['Cost per patient in $K'],
-      baselineTable5['Cost per patient in $K'], baselineTable6['Cost per patient in $K'], baselineTable7['Cost per patient in $K'],
-      baselineTable8['Cost per patient in $K'], baselineTable9['Cost per patient in $K'], baselineTable10['Cost per patient in $K'],
-      baselineTable11['Cost per patient in $K'], baselineTable12['Cost per patient in $K'], baselineTable13['Cost per patient in $K'],
-      baselineTable14['Cost per patient in $K']])
-baselineTable.add_row(['RDS', baselineTable1['RDS'], baselineTable2['RDS'],
-      baselineTable3['RDS'], baselineTable4['RDS'],
-      baselineTable5['RDS'], baselineTable6['RDS'], baselineTable7['RDS'],
-      baselineTable8['RDS'], baselineTable9['RDS'], baselineTable10['RDS'],
-      baselineTable11['RDS'], baselineTable12['RDS'], baselineTable13['RDS'],
-      baselineTable14['RDS']])
-baselineTable.add_row(['Apnea', baselineTable1['Apnea'], baselineTable2['Apnea'],
-      baselineTable3['Apnea'], baselineTable4['Apnea'],
-      baselineTable5['Apnea'], baselineTable6['Apnea'], baselineTable7['Apnea'],
-      baselineTable8['Apnea'], baselineTable9['Apnea'], baselineTable10['Apnea'],
-      baselineTable11['Apnea'], baselineTable12['Apnea'], baselineTable13['Apnea'],
-      baselineTable14['Apnea']])
-baselineTable.add_row(['BPD', baselineTable1['BPD'], baselineTable2['BPD'],
-      baselineTable3['BPD'], baselineTable4['BPD'],
-      baselineTable5['BPD'], baselineTable6['BPD'], baselineTable7['BPD'],
-      baselineTable8['BPD'], baselineTable9['BPD'], baselineTable10['BPD'],
-      baselineTable11['BPD'], baselineTable12['BPD'], baselineTable13['BPD'],
-      baselineTable14['BPD']])
-baselineTable.add_row(['Sepsis', baselineTable1['Sepsis'], baselineTable2['Sepsis'],
-      baselineTable3['Sepsis'], baselineTable4['Sepsis'],
-      baselineTable5['Sepsis'], baselineTable6['Sepsis'], baselineTable7['Sepsis'],
-      baselineTable8['Sepsis'], baselineTable9['Sepsis'], baselineTable10['Sepsis'],
-      baselineTable11['Sepsis'], baselineTable12['Sepsis'], baselineTable13['Sepsis'],
-      baselineTable14['Sepsis']])
-baselineTable.add_row(['Hemorrhage', baselineTable1['Hemorrhage'], baselineTable2['Hemorrhage'],
-      baselineTable3['Hemorrhage'], baselineTable4['Hemorrhage'],
-      baselineTable5['Hemorrhage'], baselineTable6['Hemorrhage'], baselineTable7['Hemorrhage'],
-      baselineTable8['Hemorrhage'], baselineTable9['Hemorrhage'], baselineTable10['Hemorrhage'],
-      baselineTable11['Hemorrhage'], baselineTable12['Hemorrhage'], baselineTable13['Hemorrhage'],
-      baselineTable14['Hemorrhage']])
+outputTable.add_row(['Average LOS', outputTable1['Average LOS'], outputTable2['Average LOS'],
+      outputTable3['Average LOS'], outputTable4['Average LOS'],
+      outputTable5['Average LOS'], outputTable6['Average LOS'], outputTable7['Average LOS'],
+      outputTable8['Average LOS'], outputTable9['Average LOS'], outputTable10['Average LOS'],
+      outputTable11['Average LOS'], outputTable12['Average LOS'], outputTable13['Average LOS'],
+      outputTable14['Average LOS']])
 
-baselineTable.add_row(['Pneumothorax', baselineTable1['Pneumothorax'], baselineTable2['Pneumothorax'],
-      baselineTable3['Pneumothorax'], baselineTable4['Pneumothorax'],
-      baselineTable5['Pneumothorax'], baselineTable6['Pneumothorax'], baselineTable7['Pneumothorax'],
-      baselineTable8['Pneumothorax'], baselineTable9['Pneumothorax'], baselineTable10['Pneumothorax'],
-      baselineTable11['Pneumothorax'], baselineTable12['Pneumothorax'], baselineTable13['Pneumothorax'],
-      baselineTable14['Pneumothorax']])
-baselineTable.add_row(['GI', baselineTable1['GI'], baselineTable2['GI'],
-      baselineTable3['GI'], baselineTable4['GI'],
-      baselineTable5['GI'], baselineTable6['GI'], baselineTable7['GI'],
-      baselineTable8['GI'], baselineTable9['GI'], baselineTable10['GI'],
-      baselineTable11['GI'], baselineTable12['GI'], baselineTable13['GI'],
-      baselineTable14['GI']])
-baselineTable.add_row(['Jaundice', baselineTable1['Jaundice'], baselineTable2['Jaundice'],
-      baselineTable3['Jaundice'], baselineTable4['Jaundice'],
-      baselineTable5['Jaundice'], baselineTable6['Jaundice'], baselineTable7['Jaundice'],
-      baselineTable8['Jaundice'], baselineTable9['Jaundice'], baselineTable10['Jaundice'],
-      baselineTable11['Jaundice'], baselineTable12['Jaundice'], baselineTable13['Jaundice'],
-      baselineTable14['Jaundice']])
-baselineTable.add_row(['NEC', baselineTable1['NEC'], baselineTable2['NEC'],
-      baselineTable3['NEC'], baselineTable4['NEC'],
-      baselineTable5['NEC'], baselineTable6['NEC'], baselineTable7['NEC'],
-      baselineTable8['NEC'], baselineTable9['NEC'], baselineTable10['NEC'],
-      baselineTable11['NEC'], baselineTable12['NEC'], baselineTable13['NEC'],
-      baselineTable14['NEC']])
-baselineTable.add_row(['ROP', baselineTable1['ROP'], baselineTable2['ROP'],
-      baselineTable3['ROP'], baselineTable4['ROP'],
-      baselineTable5['ROP'], baselineTable6['ROP'], baselineTable7['ROP'],
-      baselineTable8['ROP'], baselineTable9['ROP'], baselineTable10['ROP'],
-      baselineTable11['ROP'], baselineTable12['ROP'], baselineTable13['ROP'],
-      baselineTable14['ROP']])
-baselineTable.add_row(['PPHN', baselineTable1['PPHN'], baselineTable2['PPHN'],
-      baselineTable3['PPHN'], baselineTable4['PPHN'],
-      baselineTable5['PPHN'], baselineTable6['PPHN'], baselineTable7['PPHN'],
-      baselineTable8['PPHN'], baselineTable9['PPHN'], baselineTable10['PPHN'],
-      baselineTable11['PPHN'], baselineTable12['PPHN'], baselineTable13['PPHN'],
-      baselineTable14['PPHN']])
-baselineTable.add_row(['Asphyxia', baselineTable1['Asphyxia'], baselineTable2['Asphyxia'],
-      baselineTable3['Asphyxia'], baselineTable4['Asphyxia'],
-      baselineTable5['Asphyxia'], baselineTable6['Asphyxia'], baselineTable7['Asphyxia'],
-      baselineTable8['Asphyxia'], baselineTable9['Asphyxia'], baselineTable10['Asphyxia'],
-      baselineTable11['Asphyxia'], baselineTable12['Asphyxia'], baselineTable13['Asphyxia'],
-      baselineTable14['Asphyxia']])
-baselineTable.add_row(['Hypoglycemia', baselineTable1['Hypoglycemia'], baselineTable2['Hypoglycemia'],
-      baselineTable3['Hypoglycemia'], baselineTable4['Hypoglycemia'],
-      baselineTable5['Hypoglycemia'], baselineTable6['Hypoglycemia'], baselineTable7['Hypoglycemia'],
-      baselineTable8['Hypoglycemia'], baselineTable9['Hypoglycemia'], baselineTable10['Hypoglycemia'],
-      baselineTable11['Hypoglycemia'], baselineTable12['Hypoglycemia'], baselineTable13['Hypoglycemia'],
-      baselineTable14['Hypoglycemia']])
-baselineTable.add_row(['Hypothermia', baselineTable1['Hypothermia'], baselineTable2['Hypothermia'],
-      baselineTable3['Hypothermia'], baselineTable4['Hypothermia'],
-      baselineTable5['Hypothermia'], baselineTable6['Hypothermia'], baselineTable7['Hypothermia'],
-      baselineTable8['Hypothermia'], baselineTable9['Hypothermia'], baselineTable10['Hypothermia'],
-      baselineTable11['Hypothermia'], baselineTable12['Hypothermia'], baselineTable13['Hypothermia'],
-      baselineTable14['Hypothermia']])
-baselineTable.add_row(['HIE', baselineTable1['HIE'], baselineTable2['HIE'],
-      baselineTable3['HIE'], baselineTable4['HIE'],
-      baselineTable5['HIE'], baselineTable6['HIE'], baselineTable7['HIE'],
-      baselineTable8['HIE'], baselineTable9['HIE'], baselineTable10['HIE'],
-      baselineTable11['HIE'], baselineTable12['HIE'], baselineTable13['HIE'],
-      baselineTable14['HIE']])
+outputTable.add_row(['Cost per patient in $K', outputTable1['Cost per patient in $K'], outputTable2['Cost per patient in $K'],
+      outputTable3['Cost per patient in $K'], outputTable4['Cost per patient in $K'],
+      outputTable5['Cost per patient in $K'], outputTable6['Cost per patient in $K'], outputTable7['Cost per patient in $K'],
+      outputTable8['Cost per patient in $K'], outputTable9['Cost per patient in $K'], outputTable10['Cost per patient in $K'],
+      outputTable11['Cost per patient in $K'], outputTable12['Cost per patient in $K'], outputTable13['Cost per patient in $K'],
+      outputTable14['Cost per patient in $K']])
+outputTable.add_row(['RDS', outputTable1['RDS'], outputTable2['RDS'],
+      outputTable3['RDS'], outputTable4['RDS'],
+      outputTable5['RDS'], outputTable6['RDS'], outputTable7['RDS'],
+      outputTable8['RDS'], outputTable9['RDS'], outputTable10['RDS'],
+      outputTable11['RDS'], outputTable12['RDS'], outputTable13['RDS'],
+      outputTable14['RDS']])
+outputTable.add_row(['Apnea', outputTable1['Apnea'], outputTable2['Apnea'],
+      outputTable3['Apnea'], outputTable4['Apnea'],
+      outputTable5['Apnea'], outputTable6['Apnea'], outputTable7['Apnea'],
+      outputTable8['Apnea'], outputTable9['Apnea'], outputTable10['Apnea'],
+      outputTable11['Apnea'], outputTable12['Apnea'], outputTable13['Apnea'],
+      outputTable14['Apnea']])
+outputTable.add_row(['BPD', outputTable1['BPD'], outputTable2['BPD'],
+      outputTable3['BPD'], outputTable4['BPD'],
+      outputTable5['BPD'], outputTable6['BPD'], outputTable7['BPD'],
+      outputTable8['BPD'], outputTable9['BPD'], outputTable10['BPD'],
+      outputTable11['BPD'], outputTable12['BPD'], outputTable13['BPD'],
+      outputTable14['BPD']])
+outputTable.add_row(['Sepsis', outputTable1['Sepsis'], outputTable2['Sepsis'],
+      outputTable3['Sepsis'], outputTable4['Sepsis'],
+      outputTable5['Sepsis'], outputTable6['Sepsis'], outputTable7['Sepsis'],
+      outputTable8['Sepsis'], outputTable9['Sepsis'], outputTable10['Sepsis'],
+      outputTable11['Sepsis'], outputTable12['Sepsis'], outputTable13['Sepsis'],
+      outputTable14['Sepsis']])
+outputTable.add_row(['Hemorrhage', outputTable1['Hemorrhage'], outputTable2['Hemorrhage'],
+      outputTable3['Hemorrhage'], outputTable4['Hemorrhage'],
+      outputTable5['Hemorrhage'], outputTable6['Hemorrhage'], outputTable7['Hemorrhage'],
+      outputTable8['Hemorrhage'], outputTable9['Hemorrhage'], outputTable10['Hemorrhage'],
+      outputTable11['Hemorrhage'], outputTable12['Hemorrhage'], outputTable13['Hemorrhage'],
+      outputTable14['Hemorrhage']])
 
-print(baselineTable)
+outputTable.add_row(['Pneumothorax', outputTable1['Pneumothorax'], outputTable2['Pneumothorax'],
+      outputTable3['Pneumothorax'], outputTable4['Pneumothorax'],
+      outputTable5['Pneumothorax'], outputTable6['Pneumothorax'], outputTable7['Pneumothorax'],
+      outputTable8['Pneumothorax'], outputTable9['Pneumothorax'], outputTable10['Pneumothorax'],
+      outputTable11['Pneumothorax'], outputTable12['Pneumothorax'], outputTable13['Pneumothorax'],
+      outputTable14['Pneumothorax']])
+outputTable.add_row(['GI', outputTable1['GI'], outputTable2['GI'],
+      outputTable3['GI'], outputTable4['GI'],
+      outputTable5['GI'], outputTable6['GI'], outputTable7['GI'],
+      outputTable8['GI'], outputTable9['GI'], outputTable10['GI'],
+      outputTable11['GI'], outputTable12['GI'], outputTable13['GI'],
+      outputTable14['GI']])
+outputTable.add_row(['Jaundice', outputTable1['Jaundice'], outputTable2['Jaundice'],
+      outputTable3['Jaundice'], outputTable4['Jaundice'],
+      outputTable5['Jaundice'], outputTable6['Jaundice'], outputTable7['Jaundice'],
+      outputTable8['Jaundice'], outputTable9['Jaundice'], outputTable10['Jaundice'],
+      outputTable11['Jaundice'], outputTable12['Jaundice'], outputTable13['Jaundice'],
+      outputTable14['Jaundice']])
+outputTable.add_row(['NEC', outputTable1['NEC'], outputTable2['NEC'],
+      outputTable3['NEC'], outputTable4['NEC'],
+      outputTable5['NEC'], outputTable6['NEC'], outputTable7['NEC'],
+      outputTable8['NEC'], outputTable9['NEC'], outputTable10['NEC'],
+      outputTable11['NEC'], outputTable12['NEC'], outputTable13['NEC'],
+      outputTable14['NEC']])
+outputTable.add_row(['ROP', outputTable1['ROP'], outputTable2['ROP'],
+      outputTable3['ROP'], outputTable4['ROP'],
+      outputTable5['ROP'], outputTable6['ROP'], outputTable7['ROP'],
+      outputTable8['ROP'], outputTable9['ROP'], outputTable10['ROP'],
+      outputTable11['ROP'], outputTable12['ROP'], outputTable13['ROP'],
+      outputTable14['ROP']])
+outputTable.add_row(['PPHN', outputTable1['PPHN'], outputTable2['PPHN'],
+      outputTable3['PPHN'], outputTable4['PPHN'],
+      outputTable5['PPHN'], outputTable6['PPHN'], outputTable7['PPHN'],
+      outputTable8['PPHN'], outputTable9['PPHN'], outputTable10['PPHN'],
+      outputTable11['PPHN'], outputTable12['PPHN'], outputTable13['PPHN'],
+      outputTable14['PPHN']])
+outputTable.add_row(['Asphyxia', outputTable1['Asphyxia'], outputTable2['Asphyxia'],
+      outputTable3['Asphyxia'], outputTable4['Asphyxia'],
+      outputTable5['Asphyxia'], outputTable6['Asphyxia'], outputTable7['Asphyxia'],
+      outputTable8['Asphyxia'], outputTable9['Asphyxia'], outputTable10['Asphyxia'],
+      outputTable11['Asphyxia'], outputTable12['Asphyxia'], outputTable13['Asphyxia'],
+      outputTable14['Asphyxia']])
+outputTable.add_row(['Hypoglycemia', outputTable1['Hypoglycemia'], outputTable2['Hypoglycemia'],
+      outputTable3['Hypoglycemia'], outputTable4['Hypoglycemia'],
+      outputTable5['Hypoglycemia'], outputTable6['Hypoglycemia'], outputTable7['Hypoglycemia'],
+      outputTable8['Hypoglycemia'], outputTable9['Hypoglycemia'], outputTable10['Hypoglycemia'],
+      outputTable11['Hypoglycemia'], outputTable12['Hypoglycemia'], outputTable13['Hypoglycemia'],
+      outputTable14['Hypoglycemia']])
+outputTable.add_row(['Hypothermia', outputTable1['Hypothermia'], outputTable2['Hypothermia'],
+      outputTable3['Hypothermia'], outputTable4['Hypothermia'],
+      outputTable5['Hypothermia'], outputTable6['Hypothermia'], outputTable7['Hypothermia'],
+      outputTable8['Hypothermia'], outputTable9['Hypothermia'], outputTable10['Hypothermia'],
+      outputTable11['Hypothermia'], outputTable12['Hypothermia'], outputTable13['Hypothermia'],
+      outputTable14['Hypothermia']])
+outputTable.add_row(['HIE', outputTable1['HIE'], outputTable2['HIE'],
+      outputTable3['HIE'], outputTable4['HIE'],
+      outputTable5['HIE'], outputTable6['HIE'], outputTable7['HIE'],
+      outputTable8['HIE'], outputTable9['HIE'], outputTable10['HIE'],
+      outputTable11['HIE'], outputTable12['HIE'], outputTable13['HIE'],
+      outputTable14['HIE']])
 
-rateTable = PrettyTable(["Weight categories",
-    "Sepsis Rate","BPD Rate","NEC Rate","Pneumothorax Rate","Hemorrhage Rate"])
-
-rateTable.add_row(['500- <1000', round((baselineTable4['Sepsis']/baselineTable4['Patient Count'])*100), round((baselineTable4['BPD']/baselineTable4['Patient Count'])*100),round((baselineTable4['NEC']/baselineTable4['Patient Count'])*100),round((baselineTable4['Pneumothorax']/baselineTable4['Patient Count'])*100),round((baselineTable4['Hemorrhage']/baselineTable4['Patient Count'])*100)])
-rateTable.add_row(['1000- <1500', round((baselineTable8['Sepsis']/baselineTable8['Patient Count'])*100), round((baselineTable8['BPD']/baselineTable8['Patient Count'])*100),round((baselineTable8['NEC']/baselineTable8['Patient Count'])*100),round((baselineTable8['Pneumothorax']/baselineTable8['Patient Count'])*100),round((baselineTable8['Hemorrhage']/baselineTable8['Patient Count'])*100)])
-rateTable.add_row(['1500- <2500', round((baselineTable12['Sepsis']/baselineTable12['Patient Count'])*100), round((baselineTable12['BPD']/baselineTable12['Patient Count'])*100),round((baselineTable12['NEC']/baselineTable12['Patient Count'])*100),round((baselineTable12['Pneumothorax']/baselineTable12['Patient Count'])*100),round((baselineTable12['Hemorrhage']/baselineTable12['Patient Count'])*100)])
-rateTable.add_row(['>2500', round((baselineTable13['Sepsis']/baselineTable13['Patient Count'])*100), round((baselineTable13['BPD']/baselineTable13['Patient Count'])*100),round((baselineTable13['NEC']/baselineTable13['Patient Count'])*100),round((baselineTable13['Pneumothorax']/baselineTable13['Patient Count'])*100),round((baselineTable13['Hemorrhage']/baselineTable13['Patient Count'])*100)])
-rateTable.add_row(['All', round((baselineTable14['Sepsis']/baselineTable14['Patient Count'])*100), round((baselineTable14['BPD']/baselineTable14['Patient Count'])*100),round((baselineTable14['NEC']/baselineTable14['Patient Count'])*100),round((baselineTable14['Pneumothorax']/baselineTable14['Patient Count'])*100),round((baselineTable14['Hemorrhage']/baselineTable14['Patient Count'])*100)])
-
-print(rateTable)
+print(outputTable)
