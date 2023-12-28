@@ -204,8 +204,6 @@ def DRFCodeDistribution(drgList):
             encounterRows = encounterofPatients[encounterofPatients['Hashed MRN'] == mrn]
             if (len(encounterRows) > 0 and row['Total_Direct_Variable_Cost'] > 0 and row['APRDRG Code'] != 'NO DATA'):
                 los.append(row['LOS'])
-
-                # dictAll, dictAllSub, categoryMapping, dictAllSubL2, categoryMappingL2, dictAllParentCount, dictAllSubCount, dictAllL2Count, dictAllParentLOS, dictAllSubLOS, dictAllL2LOS,allUhids = createMappingforICD(row['PatientID'], allUhids, encounterRows, dictAll, dictAllSub, categoryMapping, dictAllSubL2, categoryMappingL2, dictAllParentCount, dictAllSubCount, dictAllL2Count, dictAllParentLOS, dictAllSubLOS, dictAllL2LOS, row['LOS'])
                 totalCost = totalCost + sum(encounterRows['Total Direct Variable Cost'])
 
                 for code in hypothermiaICD:
