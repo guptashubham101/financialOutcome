@@ -416,6 +416,22 @@ def DRFCodeDistribution(drgList):
     pneumoDict = {}
     pneumoDict['Pneumo Count'] = len(surfactantListAgePneumo)
     pneumoDict['Non Pneumo Count'] = len(surfactantListAgePneumoNon)
+
+    pneumoNonPneumothoraxPatients = []
+    pneumoNonPneumothoraxAge = []
+    for obj in surfactantListAgePneumo:
+        pneumoNonPneumothoraxPatients.append(1)
+        pneumoNonPneumothoraxAge.append(obj)
+
+    for obj in surfactantListAgePneumoNon:
+        pneumoNonPneumothoraxPatients.append(0)
+        pneumoNonPneumothoraxAge.append(obj)
+
+    from scipy import stats
+    t_stat, p_val = stats.ttest_ind(pneumoNonPneumothoraxPatients, pneumoNonPneumothoraxAge)
+    
+    pneumoDict['P value'] = round((p_val),2)
+
     if(len(surfactantListAgePneumo)):
         pneumoDict['Age Surfactant Given Pneumo'] = round(sum(surfactantListAgePneumo)/len(surfactantListAgePneumo),2)
     else:
@@ -507,67 +523,68 @@ pneumothoraxTable = PrettyTable(["Weight categories (gm)",
     "Non Pneumothorax Mech",
     "Pneumothorax CPAP Days",
     "Non Pneumothorax CPAP Days",
+    "P values of Age at Surfactant Given",
      ])
 
 
 pneumothoraxTable.add_row(['500-750', pneumothoraxTable1['Pneumo Count'] + pneumothoraxTable1['Non Pneumo Count'], pneumothoraxTable1['Pneumo Count'], pneumothoraxTable1['Non Pneumo Count'],
       pneumothoraxTable1['Age Surfactant Given Pneumo'], pneumothoraxTable1['Age Surfactant Given Non Pneumo'],
       pneumothoraxTable1['Pneumo Cost per patient in K'], pneumothoraxTable1['Non Pneumo Cost per patient in K'], pneumothoraxTable1['Pneumo Mech Vent Days'],
-      pneumothoraxTable1['Non Pneumo Mech Vent Days'], pneumothoraxTable1['Pneumo CPAP Vent Days'], pneumothoraxTable1['Non Pneumo CPAP Vent Days']])
+      pneumothoraxTable1['Non Pneumo Mech Vent Days'], pneumothoraxTable1['Pneumo CPAP Vent Days'], pneumothoraxTable1['Non Pneumo CPAP Vent Days'],pneumothoraxTable1['P value']])
 
 pneumothoraxTable.add_row(['750-1000', pneumothoraxTable2['Pneumo Count'] + pneumothoraxTable2['Non Pneumo Count'], pneumothoraxTable2['Pneumo Count'], pneumothoraxTable2['Non Pneumo Count'],
       pneumothoraxTable2['Age Surfactant Given Pneumo'], pneumothoraxTable2['Age Surfactant Given Non Pneumo'],
       pneumothoraxTable2['Pneumo Cost per patient in K'], pneumothoraxTable2['Non Pneumo Cost per patient in K'], pneumothoraxTable2['Pneumo Mech Vent Days'],
-      pneumothoraxTable2['Non Pneumo Mech Vent Days'], pneumothoraxTable2['Pneumo CPAP Vent Days'], pneumothoraxTable2['Non Pneumo CPAP Vent Days']])
+      pneumothoraxTable2['Non Pneumo Mech Vent Days'], pneumothoraxTable2['Pneumo CPAP Vent Days'], pneumothoraxTable2['Non Pneumo CPAP Vent Days'],pneumothoraxTable2['P value']])
 
 pneumothoraxTable.add_row(['<1000', pneumothoraxTable3['Pneumo Count'] + pneumothoraxTable3['Non Pneumo Count'],pneumothoraxTable3['Pneumo Count'], pneumothoraxTable3['Non Pneumo Count'],
       pneumothoraxTable3['Age Surfactant Given Pneumo'], pneumothoraxTable3['Age Surfactant Given Non Pneumo'],
       pneumothoraxTable3['Pneumo Cost per patient in K'], pneumothoraxTable3['Non Pneumo Cost per patient in K'], pneumothoraxTable3['Pneumo Mech Vent Days'],
-      pneumothoraxTable3['Non Pneumo Mech Vent Days'], pneumothoraxTable3['Pneumo CPAP Vent Days'], pneumothoraxTable3['Non Pneumo CPAP Vent Days']])
+      pneumothoraxTable3['Non Pneumo Mech Vent Days'], pneumothoraxTable3['Pneumo CPAP Vent Days'], pneumothoraxTable3['Non Pneumo CPAP Vent Days'],pneumothoraxTable3['P value']])
 pneumothoraxTable.add_row(['Total 500-1000', pneumothoraxTable4['Pneumo Count'] + pneumothoraxTable4['Non Pneumo Count'],pneumothoraxTable4['Pneumo Count'], pneumothoraxTable4['Non Pneumo Count'],
       pneumothoraxTable4['Age Surfactant Given Pneumo'], pneumothoraxTable4['Age Surfactant Given Non Pneumo'],
       pneumothoraxTable4['Pneumo Cost per patient in K'], pneumothoraxTable4['Non Pneumo Cost per patient in K'], pneumothoraxTable4['Pneumo Mech Vent Days'],
-      pneumothoraxTable4['Non Pneumo Mech Vent Days'], pneumothoraxTable4['Pneumo CPAP Vent Days'], pneumothoraxTable4['Non Pneumo CPAP Vent Days']])
+      pneumothoraxTable4['Non Pneumo Mech Vent Days'], pneumothoraxTable4['Pneumo CPAP Vent Days'], pneumothoraxTable4['Non Pneumo CPAP Vent Days'],pneumothoraxTable4['P value']])
 pneumothoraxTable.add_row(['1000-1250', pneumothoraxTable5['Pneumo Count'] + pneumothoraxTable5['Non Pneumo Count'],pneumothoraxTable5['Pneumo Count'], pneumothoraxTable5['Non Pneumo Count'],
       pneumothoraxTable5['Age Surfactant Given Pneumo'], pneumothoraxTable5['Age Surfactant Given Non Pneumo'],
       pneumothoraxTable5['Pneumo Cost per patient in K'], pneumothoraxTable5['Non Pneumo Cost per patient in K'], pneumothoraxTable5['Pneumo Mech Vent Days'],
-      pneumothoraxTable5['Non Pneumo Mech Vent Days'], pneumothoraxTable5['Pneumo CPAP Vent Days'], pneumothoraxTable5['Non Pneumo CPAP Vent Days']])
+      pneumothoraxTable5['Non Pneumo Mech Vent Days'], pneumothoraxTable5['Pneumo CPAP Vent Days'], pneumothoraxTable5['Non Pneumo CPAP Vent Days'],pneumothoraxTable5['P value']])
 pneumothoraxTable.add_row(['1250-1500', pneumothoraxTable6['Pneumo Count'] + pneumothoraxTable6['Non Pneumo Count'],pneumothoraxTable6['Pneumo Count'], pneumothoraxTable6['Non Pneumo Count'],
       pneumothoraxTable6['Age Surfactant Given Pneumo'], pneumothoraxTable6['Age Surfactant Given Non Pneumo'],
       pneumothoraxTable6['Pneumo Cost per patient in K'], pneumothoraxTable6['Non Pneumo Cost per patient in K'], pneumothoraxTable6['Pneumo Mech Vent Days'],
-      pneumothoraxTable6['Non Pneumo Mech Vent Days'], pneumothoraxTable6['Pneumo CPAP Vent Days'], pneumothoraxTable6['Non Pneumo CPAP Vent Days']])
+      pneumothoraxTable6['Non Pneumo Mech Vent Days'], pneumothoraxTable6['Pneumo CPAP Vent Days'], pneumothoraxTable6['Non Pneumo CPAP Vent Days'],pneumothoraxTable6['P value']])
 pneumothoraxTable.add_row(['<1500', pneumothoraxTable7['Pneumo Count'] + pneumothoraxTable7['Non Pneumo Count'],pneumothoraxTable7['Pneumo Count'], pneumothoraxTable7['Non Pneumo Count'],
       pneumothoraxTable7['Age Surfactant Given Pneumo'], pneumothoraxTable7['Age Surfactant Given Non Pneumo'],
       pneumothoraxTable7['Pneumo Cost per patient in K'], pneumothoraxTable7['Non Pneumo Cost per patient in K'], pneumothoraxTable7['Pneumo Mech Vent Days'],
-      pneumothoraxTable7['Non Pneumo Mech Vent Days'], pneumothoraxTable7['Pneumo CPAP Vent Days'], pneumothoraxTable7['Non Pneumo CPAP Vent Days']])
+      pneumothoraxTable7['Non Pneumo Mech Vent Days'], pneumothoraxTable7['Pneumo CPAP Vent Days'], pneumothoraxTable7['Non Pneumo CPAP Vent Days'],pneumothoraxTable7['P value']])
 pneumothoraxTable.add_row(['Total 500-1500', pneumothoraxTable8['Pneumo Count'] + pneumothoraxTable8['Non Pneumo Count'],pneumothoraxTable8['Pneumo Count'], pneumothoraxTable8['Non Pneumo Count'],
       pneumothoraxTable8['Age Surfactant Given Pneumo'], pneumothoraxTable8['Age Surfactant Given Non Pneumo'],
       pneumothoraxTable8['Pneumo Cost per patient in K'], pneumothoraxTable8['Non Pneumo Cost per patient in K'], pneumothoraxTable8['Pneumo Mech Vent Days'],
-      pneumothoraxTable8['Non Pneumo Mech Vent Days'], pneumothoraxTable8['Pneumo CPAP Vent Days'], pneumothoraxTable8['Non Pneumo CPAP Vent Days']])
+      pneumothoraxTable8['Non Pneumo Mech Vent Days'], pneumothoraxTable8['Pneumo CPAP Vent Days'], pneumothoraxTable8['Non Pneumo CPAP Vent Days'],pneumothoraxTable8['P value']])
 pneumothoraxTable.add_row(['1500-2000', pneumothoraxTable9['Pneumo Count'] + pneumothoraxTable9['Non Pneumo Count'],pneumothoraxTable9['Pneumo Count'], pneumothoraxTable9['Non Pneumo Count'],
       pneumothoraxTable9['Age Surfactant Given Pneumo'], pneumothoraxTable9['Age Surfactant Given Non Pneumo'],
       pneumothoraxTable9['Pneumo Cost per patient in K'], pneumothoraxTable9['Non Pneumo Cost per patient in K'], pneumothoraxTable9['Pneumo Mech Vent Days'],
-      pneumothoraxTable9['Non Pneumo Mech Vent Days'], pneumothoraxTable9['Pneumo CPAP Vent Days'], pneumothoraxTable9['Non Pneumo CPAP Vent Days']])
+      pneumothoraxTable9['Non Pneumo Mech Vent Days'], pneumothoraxTable9['Pneumo CPAP Vent Days'], pneumothoraxTable9['Non Pneumo CPAP Vent Days'],pneumothoraxTable9['P value']])
 pneumothoraxTable.add_row(['2000-2500', pneumothoraxTable10['Pneumo Count'] + pneumothoraxTable10['Non Pneumo Count'],pneumothoraxTable10['Pneumo Count'], pneumothoraxTable10['Non Pneumo Count'],
       pneumothoraxTable10['Age Surfactant Given Pneumo'], pneumothoraxTable10['Age Surfactant Given Non Pneumo'],
       pneumothoraxTable10['Pneumo Cost per patient in K'], pneumothoraxTable10['Non Pneumo Cost per patient in K'], pneumothoraxTable10['Pneumo Mech Vent Days'],
-      pneumothoraxTable10['Non Pneumo Mech Vent Days'], pneumothoraxTable10['Pneumo CPAP Vent Days'], pneumothoraxTable10['Non Pneumo CPAP Vent Days']])
+      pneumothoraxTable10['Non Pneumo Mech Vent Days'], pneumothoraxTable10['Pneumo CPAP Vent Days'], pneumothoraxTable10['Non Pneumo CPAP Vent Days'],pneumothoraxTable10['P value']])
 pneumothoraxTable.add_row(['1500-2500', pneumothoraxTable11['Pneumo Count'] + pneumothoraxTable11['Non Pneumo Count'],pneumothoraxTable11['Pneumo Count'], pneumothoraxTable11['Non Pneumo Count'],
       pneumothoraxTable11['Age Surfactant Given Pneumo'], pneumothoraxTable11['Age Surfactant Given Non Pneumo'],
       pneumothoraxTable11['Pneumo Cost per patient in K'], pneumothoraxTable11['Non Pneumo Cost per patient in K'], pneumothoraxTable11['Pneumo Mech Vent Days'],
-      pneumothoraxTable11['Non Pneumo Mech Vent Days'], pneumothoraxTable11['Pneumo CPAP Vent Days'], pneumothoraxTable11['Non Pneumo CPAP Vent Days']])
+      pneumothoraxTable11['Non Pneumo Mech Vent Days'], pneumothoraxTable11['Pneumo CPAP Vent Days'], pneumothoraxTable11['Non Pneumo CPAP Vent Days'],pneumothoraxTable11['P value']])
 pneumothoraxTable.add_row(['Total 1500-2500', pneumothoraxTable12['Pneumo Count'] + pneumothoraxTable12['Non Pneumo Count'],pneumothoraxTable12['Pneumo Count'], pneumothoraxTable12['Non Pneumo Count'],
       pneumothoraxTable12['Age Surfactant Given Pneumo'], pneumothoraxTable12['Age Surfactant Given Non Pneumo'],
       pneumothoraxTable12['Pneumo Cost per patient in K'], pneumothoraxTable12['Non Pneumo Cost per patient in K'], pneumothoraxTable12['Pneumo Mech Vent Days'],
-      pneumothoraxTable12['Non Pneumo Mech Vent Days'], pneumothoraxTable12['Pneumo CPAP Vent Days'], pneumothoraxTable12['Non Pneumo CPAP Vent Days']])
+      pneumothoraxTable12['Non Pneumo Mech Vent Days'], pneumothoraxTable12['Pneumo CPAP Vent Days'], pneumothoraxTable12['Non Pneumo CPAP Vent Days'],pneumothoraxTable12['P value']])
 pneumothoraxTable.add_row(['>2500', pneumothoraxTable13['Pneumo Count'] + pneumothoraxTable13['Non Pneumo Count'],pneumothoraxTable13['Pneumo Count'], pneumothoraxTable13['Non Pneumo Count'],
       pneumothoraxTable13['Age Surfactant Given Pneumo'], pneumothoraxTable13['Age Surfactant Given Non Pneumo'],
       pneumothoraxTable13['Pneumo Cost per patient in K'], pneumothoraxTable13['Non Pneumo Cost per patient in K'], pneumothoraxTable13['Pneumo Mech Vent Days'],
-      pneumothoraxTable13['Non Pneumo Mech Vent Days'], pneumothoraxTable13['Pneumo CPAP Vent Days'], pneumothoraxTable13['Non Pneumo CPAP Vent Days']])
+      pneumothoraxTable13['Non Pneumo Mech Vent Days'], pneumothoraxTable13['Pneumo CPAP Vent Days'], pneumothoraxTable13['Non Pneumo CPAP Vent Days'],pneumothoraxTable13['P value']])
 pneumothoraxTable.add_row(['All', pneumothoraxTable14['Pneumo Count'] + pneumothoraxTable14['Non Pneumo Count'],pneumothoraxTable14['Pneumo Count'], pneumothoraxTable14['Non Pneumo Count'],
       pneumothoraxTable14['Age Surfactant Given Pneumo'], pneumothoraxTable14['Age Surfactant Given Non Pneumo'],
       pneumothoraxTable14['Pneumo Cost per patient in K'], pneumothoraxTable14['Non Pneumo Cost per patient in K'], pneumothoraxTable14['Pneumo Mech Vent Days'],
-      pneumothoraxTable14['Non Pneumo Mech Vent Days'], pneumothoraxTable14['Pneumo CPAP Vent Days'], pneumothoraxTable14['Non Pneumo CPAP Vent Days']])
+      pneumothoraxTable14['Non Pneumo Mech Vent Days'], pneumothoraxTable14['Pneumo CPAP Vent Days'], pneumothoraxTable14['Non Pneumo CPAP Vent Days'],pneumothoraxTable14['P value']])
 
 
 
